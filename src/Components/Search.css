@@ -1,0 +1,21 @@
+input{
+    margin-top: 29px;
+    width: 50vw;
+    border-radius: 20px;
+    height: 6vh;
+}
+.search{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 50px;
+    align-items: baseline;
+
+}
+button{
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 20px;
+
+}

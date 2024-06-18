@@ -1,0 +1,8 @@
+.weatherdisplay{
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
+    text-align: center;
+    align-items: center;
+   
+}
