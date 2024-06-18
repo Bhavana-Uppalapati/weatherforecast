@@ -3,9 +3,10 @@
     width: 50vw;
     height: 50vh; */
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin-top: 100px;
+    gap: 20px;
 }
 p{
     color: white;

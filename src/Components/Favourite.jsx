@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { context } from "../App";
 import "./Favourite.css";
+import {  useNavigate } from "react-router-dom";
 
 function Favourite() {
   let date = new Date().toString();
   const [favcityWeather, setfavcityWeather] = useState([]);
   const { favouriteCitiesdata, key, setfavouriteCities } =
     useContext(context);
-  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-  const [selectedCityId, setSelectedCityId] = useState(null);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [cityId, setCityId] = useState(null);
   const [newCityName, setNewCityName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate()
 
   useEffect(() => {
     FavouritecityData();
@@ -55,7 +57,7 @@ function Favourite() {
     }
   };
 
-  const deleteFunction = (id) => {
+  const deleteCity = (id) => {
     fetch("https://food-noq0.onrender.com/weather" + id, {
       method: "DELETE",
       headers: {
@@ -71,9 +73,9 @@ function Favourite() {
       });
   };
 
-  const updateCityName = (id) => {
-    setSelectedCityId(id);
-    setShowUpdatePopup(true);
+  const updateCity = (id) => {
+    setCityId(id);
+    setShowUpdate(true);
   };
 
   const handleUpdateSubmit = async () => {
@@ -84,7 +86,7 @@ function Favourite() {
       if (res.ok) {
         const updatedCity = { city: newCityName };
         let updateRes = await fetch(
-          `https://food-noq0.onrender.com/weather/${selectedCityId}`,
+          `https://food-noq0.onrender.com/weather/${cityId}`, 
           {
             method: "PUT",
             headers: {
@@ -95,59 +97,68 @@ function Favourite() {
         );
         let updatedData = await updateRes.json();
         setfavouriteCities((prev) =>
-          prev.map((city) => (city.id === selectedCityId ? updatedData : city))
+          prev.map((city) => (city.id === cityId ? updatedData : city))  
         );
-        setShowUpdatePopup(false);
+        setShowUpdate(false);
         setNewCityName("");
         setErrorMessage("");
       } else {
-        setErrorMessage("City not found. Please enter a valid city name.");
+        setErrorMessage("Please enter a valid city name.");
       }
     } catch (error) {
       console.error("Error updating city name:", error);
     }
   };
 
+ const navigateback = () =>{
+    navigate("/")
+ }
   return (
-    <div className="favourite-city-div">
-      <h1 style={{ textAlign: "center", marginBottom: "50px" }}>
-        Favourite Cities Weather Details
-      </h1>
-      {favcityWeather.map((data, index) => (
-        <div key={index} className="fav-weather-container">
-          <h3>{data.name}</h3>
-          <p>{date.slice(0, 10)}</p>
-          <h3>
-            {Math.floor(data?.main?.temp - 273)}
+    <>
+    <div style={{marginLeft:"15px"}} className="mt-5"> <button onClick={navigateback} style={{fontSize:"25px"}}><i class="fa-solid fa-arrow-left"></i></button> </div>
+    
+   
+  <div className="favourite-city-div">
+  <h1 className="text-white mt-5" style={{ textAlign: "center", marginBottom: "100px" }}>
+    Favourite Cities Weather Details
+  </h1>
+      { favcityWeather ? favcityWeather.map((data, index) => (
+        <div key={index} className="fav-weather  mb-5">
+          <h3 className="text-white" >{data.name}</h3>
+          <p  className="text-white">{date.slice(0, 10)}</p>
+          <h3 className="text-white" > 
+            {Math.floor(data?.main?.temp - 273)} 
             <sup>o</sup>C
           </h3>
-          <div className="favCitiesBtns">
-            <button onClick={() => updateCityName(data.id)}>Update</button>
-            <button onClick={() => deleteFunction(data.id)}>Delete</button>
-          </div>
-        </div>
-      ))}
+        <button className=" text-white fs-4 border-0" onClick={() => updateCity(data.id)}>Update</button>
+        <button class="text-white border-0" onClick={() => deleteCity(data.id)}><i style={{fontSize:"23px"}} class="fa-solid fa-trash"></i></button>
+         
+        </div>  
+      )) : <div class="spinner-border" role="status"> 
+      <span class="visually-hidden">Loading...</span> 
+    </div>   } 
 
-      {showUpdatePopup && (
-        <div className="update-popup">
-          <div className="popup-content">
-            <h3>Update City Name</h3>
-            <input
+      {showUpdate && (
+        <div className="update-popup-div" style={{marginTop:"100px"}}> 
+          <div className="update-popup-content" style={{textAlign:"center"}}>
+            <h3>Update City Name</h3> 
+            <input className="cityupdateinput"
               type="text"
               value={newCityName}
               onChange={(e) => setNewCityName(e.target.value)}
               placeholder="Enter new city name"
             />
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {errorMessage && <p className="error">{errorMessage}</p>}
             <button onClick={handleUpdateSubmit} disabled={!newCityName}>
-              Submit
+              Update
             </button>
-            <button onClick={() => setShowUpdatePopup(false)}>Cancel</button>
+            <button onClick={() => setShowUpdate(false)}>Cancel</button>
           </div>
         </div>
       )}
-    </div>
-  );
-}
+    </div> </>
+  ); 
+} 
+
 
 export default Favourite;
