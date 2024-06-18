@@ -10,18 +10,19 @@ export default function Dashboard() {
   console.log(List)
   let temparature = todayweather?.main?.temp
   return (
-    todayweather ? 
+    todayweather.cod==200 ? 
     <div className='maindiv'>
         <div>
+          <p className='fs-4'>{todayweather.name}</p> 
           <p style={{fontSize:"2rem"}}>Today's Weather</p>
           <p style={{fontSize:"1.5rem"}}>{Math.floor(temparature-273)}<sup>o</sup>C</p> 
-          <p>{todayweather?.weather[0]?.description}</p>
+          <p>{todayweather?.weather[0]?.description[0].toUpperCase()+todayweather?.weather[0]?.description.slice(1)}</p>
 
         </div>
        <div>
      <img src={cloud3} alt="" /> 
        </div>
-     </div> : ""
+     </div> : "" 
 
   ) 
 }

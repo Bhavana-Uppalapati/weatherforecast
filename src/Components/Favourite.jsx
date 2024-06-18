@@ -58,7 +58,7 @@ function Favourite() {
   };
 
   const deleteCity = (id) => {
-    fetch("https://food-noq0.onrender.com/weather" + id, {
+    fetch("https://food-noq0.onrender.com/weather/" + id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ function Favourite() {
         setfavouriteCities((prev) => prev.filter((obj) => obj.id !== id));
       })
       .catch((error) => {
-        console.error("Error deleting favorite city:", error);
+        console.error("Error deleting favorite city:", error); 
       });
   };
 
@@ -122,7 +122,7 @@ function Favourite() {
   <h1 className="text-white mt-5" style={{ textAlign: "center", marginBottom: "100px" }}>
     Favourite Cities Weather Details
   </h1>
-      { favcityWeather ? favcityWeather.map((data, index) => (
+      { favcityWeather.length!==0 ? favcityWeather.map((data, index) => (
         <div key={index} className="fav-weather  mb-5">
           <h3 className="text-white" >{data.name}</h3>
           <p  className="text-white">{date.slice(0, 10)}</p>
@@ -134,9 +134,9 @@ function Favourite() {
         <button class="text-white border-0" onClick={() => deleteCity(data.id)}><i style={{fontSize:"23px"}} class="fa-solid fa-trash"></i></button>
          
         </div>  
-      )) : <div class="spinner-border" role="status"> 
-      <span class="visually-hidden">Loading...</span> 
-    </div>   } 
+      )) : <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>  } 
 
       {showUpdate && (
         <div className="update-popup-div" style={{marginTop:"100px"}}> 

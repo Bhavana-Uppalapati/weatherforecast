@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import "./Weatherdisplay.css"
 import { context } from '../App'
+import image from  "../Assests/weather_dribbble_size.gif.gif"
 
 export default function Weatherdisplay() {
   let {dailyweather} = useContext(context)
@@ -25,7 +26,7 @@ export default function Weatherdisplay() {
                          </div>
                          <hr style={{width:"80vw",color:"white",marginLeft:"200px"}}/>
                    </div>)
-          }):""
+          }): ""
     }
 
     </div>
